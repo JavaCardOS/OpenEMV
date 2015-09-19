@@ -1,0 +1,34 @@
+//Select Applet, return File Control Information (FCI) Proprietary Template, it contains Dedicated File(DF), File Control Information and Application Tag.
+00A4040006454D5600000100;
+//Generates an 8 byte random number .
+8084000000;
+
+//READ RECORD Command: '00B2' + Record number + Reference control parameter. (See Book 3, Section 6.5.11)
+//Get the record of SFI 1, Record 1,It contains  Primary account number, Bank identifier code, Cardholder Verification Method (CVM) List and other fields.
+00B2010C;
+//Get the Read record message template, record 2, It contains Certification Authority Public Key Index, Issuer Public Key Certificate, Issuer Public Key Remainder and Issuer Public Key Exponent.
+00B2020C;
+//Get the Read record message template, record 3, It contains ICC Public Key Certificate, ICC Public Key Exponent, ICC Public Key Remainder and Dynamic Data Authentication Data Object List (DDOL).
+00B2030C;
+
+//GET PROCESSING OPTIONS(GPO) Command: 80A80000 + Lc + PDOL related data + 00,(See Book 3, Section 6.5.8)
+//In this applet, PDOL is not checked,The response message is a primitive data object with tag equal to '80'.the format is:
+//80 + Length + AIP(Application Interchange Profile) + AFL(Application File Locator) 
+80A80000;
+
+//GET DATA command: in EMV Specification, the value of P1P2 will be '9F36', '9F13', '9F17', or '9F4F'(Log Format) (See Book 3, Section 6.5.7)
+//Get the data of ATC(Application Transaction Counter, tag '9F36')), 
+80CA9F36;
+//Get the data of PIN Try Counter
+80CA9F17;
+//Get the data of Last Online ATC Register(tag '9F13')
+80CA9F13;
+
+//GENERATE AC command: It sends transaction-related data to the ICC, which computes and returns a cryptogram.in this applet of generateFirstAC only supporting request TC and ARQC.(See Book 3, Section 6.5.5)
+//request TC
+80AE4000;
+
+
+//Compute the second AC response APDU using Format 1. 
+//AAC
+80AE2000;
